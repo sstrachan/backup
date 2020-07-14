@@ -10,5 +10,13 @@ set -x
 
 cp backup.service /etc/systemd/system
 cp backup.timer /etc/systemd/system
+cp backup-prune.service /etc/systemd/system
+cp backup-prune.timer /etc/systemd/system
 cp restic-backup /usr/local/bin
+cp restic-prune /usr/local/bin
 systemctl daemon-reload
+
+#systemctl enable backup.timer
+#systemctl enable backup-prune.timer
+#systemctl start backup.timer
+#systemctl start backup-prune.timer
