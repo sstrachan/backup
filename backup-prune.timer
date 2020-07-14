@@ -1,8 +1,8 @@
 [Unit]
-Description=Backup service timer
+Description=Backup prune service timer
 
 [Timer]
-OnCalendar=1:11:11
+OnCalendar=Tue *-*-* 04:44:44
 Unit=backup.service
 
 [Install]

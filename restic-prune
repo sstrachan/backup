@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Exit on command failure
+set -e
+
+# Turn echo on
+set -x
+
+REPO=/home/sean/backup/restic-repo
+PASSFILE=/home/sean/.restic_pass
+CACHEDIR=/home/sean/.cache/restic
+
+# Forget Policy
+/usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR prune
+
+#Adjust Permissions
+chown -R sean:sean $CACHEDIR $REPO 
