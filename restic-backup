@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source /home/sean/.pushover
+PRIORITY=-1
 
 pushalert() {
         curl -s --form-string "token=$TOKEN" \
