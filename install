@@ -1,0 +1,5 @@
+#!/bin/bash
+cp backup.service /etc/systemd/system
+cp backup.timer /etc/systemd/system
+cp restic-backup /usr/local/bin
+systemctl daemon-reload

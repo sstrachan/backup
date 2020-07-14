@@ -1,0 +1,5 @@
+[Unit]
+Description=Backup service using restic
+
+[Service]
+ExecStart=/usr/local/bin/restic-backup

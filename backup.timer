@@ -1,0 +1,10 @@
+[Unit]
+Description=Backup service timer
+
+[Timer]
+#OnBootSec=0min
+OnCalendar=2:22:22
+Unit=backup.service
+
+[Install]
+WantedBy=multi-user.target
