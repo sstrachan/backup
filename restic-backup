@@ -1,5 +1,16 @@
 #!/bin/bash
 
+source /home/sean/.pushover
+
+pushalert() {
+        curl -s --form-string "token=$TOKEN" \
+          --form-string "user=$USER" \
+          --form-string "priority=$PRIORITY" \
+          --form-string "title=$1" \
+          --form-string "message=$2" \
+          https://api.pushover.net/1/messages.json
+}
+
 # Exit on command failure
 set -e
 
@@ -9,6 +20,10 @@ set -x
 REPO=/home/sean/backup/restic-repo
 PASSFILE=/home/sean/.restic_pass
 CACHEDIR=/home/sean/.cache/restic
+LOGFILE=/tmp/rclone.log
+
+# Remove existing temp log if any
+[ -e $LOGFILE ] && rm $LOGFILE
 
 # Backup
 /usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR backup /home/sean/Docker/miostar
@@ -17,4 +32,23 @@ CACHEDIR=/home/sean/.cache/restic
 /usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR forget --keep-daily 5 --keep-monthly 2
 
 #Adjust Permissions
-chown -R sean:sean $CACHEDIR $REPO 
+chown -R sean:sean $CACHEDIR $REPO
+
+#Clone repo to cloud
+sudo -u sean /usr/bin/rclone sync $REPO gdrive:Miostar$REPO -v 2>&1 | tee $LOGFILE; ret=$(( $ret + $?))
+
+#Push notification
+if [ "$ret" -ne "0" ]; then
+  title="Backup Failed"
+  message="Backup failed at $(date) with $ret failure(s)"$'\n'"$(tail -n6 $LOGFILE)"
+  echo "$message"
+  pushalert "$title" "$message" >> $LOGFILE
+else
+  title="Backup Succeeded"
+  message="Backup Successful at $(date)"$'\n'"$(tail -n6 $LOGFILE)"
+  echo "$message"
+  pushalert "$title" "$message" >> $LOGFILE
+fi
+
+echo ""
+exit $ret
