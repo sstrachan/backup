@@ -14,7 +14,7 @@ CACHEDIR=/home/sean/.cache/restic
 /usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR backup /home/sean/Docker/miostar
 
 # Forget Policy
-/usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR forget --keep-daily 7 --keep-monthly 3
+/usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR forget --keep-daily 5 --keep-monthly 2
 
 #Adjust Permissions
 chown -R sean:sean $CACHEDIR $REPO 

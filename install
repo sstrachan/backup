@@ -1,4 +1,13 @@
 #!/bin/bash
+
+if [ $EUID != 0 ]; then
+    sudo "$0" "$@"
+    exit $?
+fi
+
+# Turn echo on
+set -x
+
 cp backup.service /etc/systemd/system
 cp backup.timer /etc/systemd/system
 cp restic-backup /usr/local/bin
