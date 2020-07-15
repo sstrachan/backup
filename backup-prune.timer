@@ -3,7 +3,7 @@ Description=Backup prune service timer
 
 [Timer]
 OnCalendar=Tue *-*-* 04:44:44
-Unit=backup.service
+Unit=backup-prune.service
 
 [Install]
 WantedBy=multi-user.target
