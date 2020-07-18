@@ -27,7 +27,8 @@ LOGFILE=/tmp/rclone.log
 [ -e $LOGFILE ] && rm $LOGFILE
 
 # Backup
-/usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR backup /home/sean/Docker/miostar
+pushd /home/sean/Docker
+/usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR backup ./miostar
 
 # Forget Policy
 /usr/bin/restic -r $REPO -v -p $PASSFILE --cache-dir $CACHEDIR forget --keep-daily 5 --keep-monthly 2
@@ -36,7 +37,7 @@ LOGFILE=/tmp/rclone.log
 chown -R sean:sean $CACHEDIR $REPO
 
 #Clone repo to cloud
-sudo -u sean /usr/bin/rclone sync $REPO gdrive:Miostar$REPO -v 2>&1 | tee $LOGFILE; ret=$(( $ret + $?))
+sudo -u sean /usr/bin/rclone sync $REPO gdrive:Miostar$REPO -v --drive-use-trash=false 2>&1 | tee $LOGFILE; ret=$(( $ret + $?))
 
 #Push notification
 if [ "$ret" -ne "0" ]; then
