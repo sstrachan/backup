@@ -37,7 +37,7 @@ pushd /home/sean/Docker
 chown -R sean:sean $CACHEDIR $REPO
 
 #Clone repo to cloud
-sudo -u sean /usr/bin/rclone sync $REPO gdrive:Miostar$REPO -v --drive-use-trash=false 2>&1 | tee $LOGFILE; ret=$(( $ret + $?))
+sudo -u sean /usr/bin/rclone sync $REPO vtdrive:Miostar-Backup -v --drive-use-trash=false 2>&1 | tee $LOGFILE; ret=$(( $ret + $?))
 
 #Push notification
 if [ "$ret" -ne "0" ]; then
